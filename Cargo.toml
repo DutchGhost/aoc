@@ -7,5 +7,5 @@ edition = "2018"
 [dependencies]
 aocmacro = {path = "aocmacro", version = "*"}
 cachedir = "*"
-reqwest = "*"
+ureq = "*"
 structopt = "*"

@@ -1,10 +1,8 @@
 use cachedir::{CacheDir, CacheDirConfig};
 use std::{
     fs::File,
-    io::{BufReader, BufWriter, Error, ErrorKind, Read, Result, Write},
+    io::{BufReader, BufWriter, Read, Result, Write},
 };
-
-use reqwest::{header::COOKIE, Client};
 
 pub struct GetInput {
     year: String,
@@ -51,19 +49,16 @@ impl GetInput {
     }
 
     fn fetch_input(&self, day: u8) -> Result<String> {
-        let fetcher = Client::new();
         let cookie = self.read_cookie()?;
         let cookie = format!("session={}", cookie);
 
-        let input = fetcher
-            .get(&format!(
-                "https://adventofcode.com/{}/day/{}/input",
-                self.year, day
-            )).header(COOKIE, cookie)
-            .send()
-            .and_then(|x| x.error_for_status())
-            .and_then(|mut x| x.text())
-            .map_err(|e| Error::new(ErrorKind::Other, e))?;
+        let input = 
+        ureq::get(
+                &format!("https://adventofcode.com/{}/day/{}/input", self.year, day)
+            )
+            .set("Cookie", &cookie)
+            .call()
+            .into_string()?;
 
         Ok(input)
     }
