@@ -52,13 +52,13 @@ impl GetInput {
         let cookie = self.read_cookie()?;
         let cookie = format!("session={}", cookie);
 
-        let input = 
-        ureq::get(
-                &format!("https://adventofcode.com/{}/day/{}/input", self.year, day)
-            )
-            .set("Cookie", &cookie)
-            .call()
-            .into_string()?;
+        let input = ureq::get(&format!(
+            "https://adventofcode.com/{}/day/{}/input",
+            self.year, day
+        ))
+        .set("Cookie", &cookie)
+        .call()
+        .into_string()?;
 
         Ok(input)
     }
