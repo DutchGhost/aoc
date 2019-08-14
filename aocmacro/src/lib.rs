@@ -24,12 +24,12 @@ pub fn aoc(meta: TokenStream, item: TokenStream) -> TokenStream {
         .ok()
         .expect("aoc can only be applied to functions");
     
-    let name = fun.ident.clone();
+    let name = fun.sig.ident.clone();
 
     if name != "main" {
         panic!("#[aoc] can only be used from the main function!")
     }
-    
+
     let ret = quote!(
         fn #name() {
             #fun
